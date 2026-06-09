@@ -1,22 +1,72 @@
+/* ══════════════════════════════════════════════
+   Layout raiz — ocupa 100vw × 100vh sem overflow
+   ══════════════════════════════════════════════ */
 .layout {
   display: flex;
-  height: 100%;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-base);
 }
 
-/* Sidebar */
+/* ══════════════════════════════════════════════
+   Topbar — visível APENAS em tablet/mobile
+   ══════════════════════════════════════════════ */
+.topbar {
+  display: none; /* escondido no desktop */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-h);
+  z-index: 90;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.hamburger {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.hamburger:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+/* ══════════════════════════════════════════════
+   Sidebar
+   ══════════════════════════════════════════════ */
 .sidebar {
   width: var(--sidebar-width);
+  height: 100vh;
   flex-shrink: 0;
   background: var(--bg-card);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
   z-index: 100;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .sidebar-logo {
@@ -29,6 +79,7 @@
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  flex-shrink: 0;
 }
 
 .sidebar-nav {
@@ -37,6 +88,7 @@
   gap: 2px;
   padding: 12px 8px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .nav-item {
@@ -48,7 +100,7 @@
   color: var(--text-secondary);
   font-size: 13.5px;
   font-weight: 500;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s;
   text-decoration: none;
 }
 .nav-item:hover {
@@ -65,13 +117,14 @@
   color: var(--green);
 }
 
-/* Footer */
+/* ── Footer do sidebar ── */
 .sidebar-footer {
   border-top: 1px solid var(--border);
   padding: 12px 8px;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .user-info {
@@ -124,7 +177,7 @@
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
 }
 .logout-btn:hover {
@@ -132,10 +185,80 @@
   color: var(--red);
 }
 
-/* Main */
+/* ══════════════════════════════════════════════
+   Conteúdo principal — preenche o espaço restante
+   ══════════════════════════════════════════════ */
 .main-content {
-  margin-left: var(--sidebar-width);
   flex: 1;
-  overflow: auto;
-  min-height: 100vh;
+  min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Overlay escuro (mobile) — oculto no desktop */
+.sidebar-overlay {
+  display: none;
+}
+
+/* ══════════════════════════════════════════════
+   Desktop grande (>1400px) — conteúdo centralizado
+   ══════════════════════════════════════════════ */
+@media (min-width: 1400px) {
+  :root { --sidebar-width: 240px; }
+
+  .main-content > * {
+    max-width: 1440px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   Tablet (768px – 1024px) — sidebar colapsável
+   ══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .topbar { display: flex; }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    z-index: 200;
+  }
+  .sidebar--open {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+    z-index: 150;
+  }
+
+  .main-content {
+    /* sidebar não ocupa espaço no fluxo — conteúdo usa largura total */
+    padding-top: var(--topbar-h);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   Mobile (<768px) — sidebar como drawer mais estreito
+   ══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sidebar {
+    width: min(300px, 80vw);
+  }
+
+  .main-content {
+    /* sem margem lateral — sidebar é overlay */
+    padding-top: var(--topbar-h);
+  }
 }

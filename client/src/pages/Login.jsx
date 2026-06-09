@@ -52,15 +52,24 @@ export default function Login() {
 
   return (
     <div className="login-bg">
+      <video
+        className="login-bg-img"
+        src="/bg-login-video.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      <div className="login-overlay" />
       <div className="login-card">
         {/* Logo */}
         <div className="login-logo">
           <div className="login-logo-icon">
-            <Leaf size={28} color="#22C55E" />
+            <Leaf size={40} color="#22C55E" />
           </div>
           <h1 className="login-title">AgroSat AI</h1>
           <p className="login-subtitle">
-            Monitoramento inteligente para sua lavoura
+            Monitoramento inteligente com IA + dados satelitais
           </p>
         </div>
 
@@ -168,9 +177,6 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Decorative background orbs */}
-      <div className="bg-orb bg-orb-1" />
-      <div className="bg-orb bg-orb-2" />
     </div>
   );
 }

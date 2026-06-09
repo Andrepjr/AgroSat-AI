@@ -9,7 +9,10 @@
       "Bash(npm install *)",
       "WebFetch(domain:api.anthropic.com)",
       "Bash(powershell -Command \"Get-Content 'C:\\\\AgroSat-AI\\\\AgroSat_AI_\\(standalone\\).html' -TotalCount 20\")",
-      "Bash(npm create *)"
+      "Bash(npm create *)",
+      "Bash(dir \"c:\\\\AgroSat-AI\\\\client\\\\public\")",
+      "Bash(Rename-Item \"c:\\\\AgroSat-AI\\\\client\\\\public\\\\bg-login.jpg.jpg\" \"bg-login.jpg\")",
+      "PowerShell(Rename-Item \"c:\\\\AgroSat-AI\\\\client\\\\public\\\\bg-login.jpg.jpg\" \"bg-login.jpg\")"
     ]
   }
 }

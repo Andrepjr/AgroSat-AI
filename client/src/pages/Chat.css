@@ -1,8 +1,18 @@
 .chat-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* main-content tem overflow-y: auto + height: 100vh,
+     então 100% aqui preenche exatamente o painel visível */
+  height: 100%;
+  min-height: 0;
   padding: 0;
+}
+
+@media (max-width: 1024px) {
+  /* topbar consume var(--topbar-h) do topo; o restante é o chat */
+  .chat-page {
+    height: calc(100vh - var(--topbar-h));
+  }
 }
 
 /* Header */
