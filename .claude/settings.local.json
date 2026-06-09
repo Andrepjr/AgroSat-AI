@@ -12,7 +12,10 @@
       "Bash(npm create *)",
       "Bash(dir \"c:\\\\AgroSat-AI\\\\client\\\\public\")",
       "Bash(Rename-Item \"c:\\\\AgroSat-AI\\\\client\\\\public\\\\bg-login.jpg.jpg\" \"bg-login.jpg\")",
-      "PowerShell(Rename-Item \"c:\\\\AgroSat-AI\\\\client\\\\public\\\\bg-login.jpg.jpg\" \"bg-login.jpg\")"
+      "PowerShell(Rename-Item \"c:\\\\AgroSat-AI\\\\client\\\\public\\\\bg-login.jpg.jpg\" \"bg-login.jpg\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\AgroSat-AI\\\\AgroSat_AI_\\(standalone\\).html' -ReadCount 0 | Select-Object -First 3000 | Out-String | Select-String -Pattern '\\(--[a-z-]+:|:root|<style|class=\\)' | Select-Object -First 100\")",
+      "Bash(powershell -Command ' *)",
+      "Bash(node --input-type=module --eval ' *)"
     ]
   }
 }

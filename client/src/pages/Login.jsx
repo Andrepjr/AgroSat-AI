@@ -52,14 +52,7 @@ export default function Login() {
 
   return (
     <div className="login-bg">
-      <video
-        className="login-bg-img"
-        src="/bg-login-video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
+      <img src="/bg-login.jpg" className="login-bg-img" alt="" />
       <div className="login-overlay" />
       <div className="login-card">
         {/* Logo */}

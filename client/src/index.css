@@ -9,28 +9,39 @@
   --bg-card: #0F172A;
   --bg-card-hover: #1E293B;
   --bg-input: #1E293B;
-  --border: #273449;
-  --border-light: #334155;
+  --border: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(148, 163, 184, 0.22);
+  --border-light: rgba(148, 163, 184, 0.28);
 
   --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
+  --text-secondary: #CBD5E1;
   --text-muted: #64748B;
 
   --green: #22C55E;
   --green-dark: #16a34a;
-  --green-dim: rgba(34, 197, 94, 0.1);
-  --green-dim2: rgba(34, 197, 94, 0.15);
+  --green-dim: rgba(34, 197, 94, 0.10);
+  --green-dim2: rgba(34, 197, 94, 0.18);
 
   --amber: #F59E0B;
   --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-dim2: rgba(245, 158, 11, 0.20);
 
   --red: #EF4444;
   --red-dim: rgba(239, 68, 68, 0.12);
+  --red-dim2: rgba(239, 68, 68, 0.20);
 
   --blue: #3B82F6;
   --blue-dim: rgba(59, 130, 246, 0.12);
+  --blue-dim2: rgba(59, 130, 246, 0.20);
 
-  --sidebar-width: 220px;
+  --cyan: #06B6D4;
+  --cyan-dim: rgba(6, 182, 212, 0.12);
+  --cyan-dim2: rgba(6, 182, 212, 0.20);
+
+  --purple: #8B5CF6;
+  --purple-dim: rgba(139, 92, 246, 0.12);
+
+  --sidebar-width: 228px;
   --topbar-h: 56px;
   --radius: 12px;
   --radius-sm: 8px;
@@ -64,9 +75,9 @@ a:hover { text-decoration: underline; }
 button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 input, textarea { font-family: inherit; outline: none; }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-card); }
-::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 
 /* ── Badge ── */
 .badge {
@@ -80,20 +91,47 @@ input, textarea { font-family: inherit; outline: none; }
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
-.badge-green { background: var(--green-dim2); color: var(--green); }
-.badge-amber { background: var(--amber-dim); color: var(--amber); }
-.badge-red   { background: var(--red-dim);   color: var(--red); }
-.badge-blue  { background: var(--blue-dim);  color: var(--blue); }
+.badge-green  { background: var(--green-dim2);  color: var(--green);  border: 1px solid rgba(34,197,94,0.25); }
+.badge-amber  { background: var(--amber-dim2);  color: var(--amber);  border: 1px solid rgba(245,158,11,0.25); }
+.badge-red    { background: var(--red-dim2);    color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
+.badge-blue   { background: var(--blue-dim2);   color: var(--blue);   border: 1px solid rgba(59,130,246,0.25); }
+.badge-cyan   { background: var(--cyan-dim2);   color: var(--cyan);   border: 1px solid rgba(6,182,212,0.25); }
+
+/* ── Status badges (KPI cards) ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.status-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.status-normal { background: var(--green-dim2); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+.status-alerta { background: var(--amber-dim2); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+.status-critico { background: var(--red-dim2); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
 
 /* ── Card ── */
 .card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   padding: 20px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.card:hover { border-color: var(--border-light); }
+.card:hover {
+  border-color: var(--border-light);
+  box-shadow: 0 0 0 1px rgba(148,163,184,0.06), 0 4px 20px rgba(0,0,0,0.3);
+}
 
 /* ── Buttons ── */
 .btn {
@@ -108,14 +146,14 @@ input, textarea { font-family: inherit; outline: none; }
   white-space: nowrap;
 }
 .btn-primary { background: var(--green); color: #fff; }
-.btn-primary:hover { background: var(--green-dark); }
+.btn-primary:hover { background: var(--green-dark); box-shadow: 0 0 16px rgba(34,197,94,0.35); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-ghost {
   background: transparent;
   color: var(--text-secondary);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
 }
-.btn-ghost:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.btn-ghost:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-light); }
 .btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── Spinner ── */
@@ -129,6 +167,18 @@ input, textarea { font-family: inherit; outline: none; }
   flex-shrink: 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-dot {
+  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+  70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+.fade-in-up { animation: fadeInUp 0.3s ease both; }
 
 /* ── Alert messages ── */
 .error-msg {
@@ -148,7 +198,7 @@ input, textarea { font-family: inherit; outline: none; }
   font-size: 13px;
 }
 
-/* ── Shared page header (used by all pages) ── */
+/* ── Shared page header ── */
 .page-header {
   display: flex;
   align-items: flex-start;
