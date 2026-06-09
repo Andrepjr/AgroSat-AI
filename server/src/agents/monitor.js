@@ -73,7 +73,9 @@ Dados do alerta:
   });
 
   try {
-    return JSON.parse(response.choices[0].message.content);
+    let content = response.choices[0].message.content;
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    return JSON.parse(content);
   } catch {
     // Fallback se o JSON vier mal formatado
     return {

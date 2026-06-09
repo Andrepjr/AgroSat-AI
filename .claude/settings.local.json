@@ -6,7 +6,10 @@
       "Bash(mkdir -p \"c:\\\\Users\\\\andre\\\\OneDrive\\\\Área de Trabalho\\\\AgroSat-AI\\\\server\\\\src\\\\database\")",
       "Bash(mkdir -p \"c:\\\\Users\\\\andre\\\\OneDrive\\\\Área de Trabalho\\\\AgroSat-AI\\\\server\\\\src\\\\simulator\")",
       "Bash(mkdir -p \"c:\\\\Users\\\\andre\\\\OneDrive\\\\Área de Trabalho\\\\AgroSat-AI\\\\server\\\\src\\\\middleware\")",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\AgroSat-AI\\\\AgroSat_AI_\\(standalone\\).html' -TotalCount 20\")",
+      "Bash(npm create *)"
     ]
   }
 }

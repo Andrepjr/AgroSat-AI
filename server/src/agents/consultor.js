@@ -36,7 +36,16 @@ export async function executarConsultor(usuarioId, mensagem) {
      FETCH FIRST 1 ROW ONLY`,
     { usuario_id: usuarioId }
   );
-  const diagnostico = diagResult.rows[0] || null;
+  // Extrai apenas primitivos do row Oracle para evitar referências circulares (LOBs)
+  const raw = diagResult.rows[0];
+  const diagnostico = raw ? {
+    STATUS_GERAL:      String(raw.STATUS_GERAL      || ''),
+    ANALISE_SOLO:      String(raw.ANALISE_SOLO      || ''),
+    ANALISE_CLIMA:     String(raw.ANALISE_CLIMA     || ''),
+    ANALISE_VEGETACAO: String(raw.ANALISE_VEGETACAO || ''),
+    RECOMENDACOES:     String(raw.RECOMENDACOES     || ''),
+    CREATED_AT:        raw.CREATED_AT,
+  } : null;
 
   // Busca histórico recente da conversa (últimas 20 mensagens)
   const historicoResult = await query(
@@ -50,8 +59,8 @@ export async function executarConsultor(usuarioId, mensagem) {
   );
 
   const historico = historicoResult.rows.map(r => ({
-    role: r.ROLE,
-    content: r.CONTENT,
+    role: String(r.ROLE || ''),
+    content: String(r.CONTENT || ''),
   }));
 
   // Monta array de mensagens para o GPT

@@ -47,10 +47,12 @@ export async function executarAnalista(usuarioId) {
     return vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2) : null;
   };
 
+  // Extrai apenas primitivos da última leitura Oracle para evitar referências circulares no JSON.stringify
+  const ul = dados[0];
   const resumo = {
     periodo: {
       inicio: dados[dados.length - 1]?.TIMESTAMP_LEITURA,
-      fim: dados[0]?.TIMESTAMP_LEITURA,
+      fim: ul?.TIMESTAMP_LEITURA,
       total_leituras: dados.length,
     },
     temperatura: {
@@ -69,7 +71,15 @@ export async function executarAnalista(usuarioId) {
     },
     precipitacao_total_mm: dados.reduce((acc, r) => acc + (r.PRECIPITACAO || 0), 0).toFixed(2),
     setores: [...new Set(dados.map(r => r.SETOR))],
-    ultima_leitura: dados[0],
+    ultima_leitura: ul ? {
+      temperatura:   ul.TEMPERATURA,
+      umidade_solo:  ul.UMIDADE_SOLO,
+      umidade_ar:    ul.UMIDADE_AR,
+      ndvi:          ul.NDVI,
+      precipitacao:  ul.PRECIPITACAO,
+      setor:         ul.SETOR,
+      timestamp:     ul.TIMESTAMP_LEITURA,
+    } : null,
   };
 
   const response = await openai.chat.completions.create({
@@ -86,7 +96,9 @@ export async function executarAnalista(usuarioId) {
 
   let analise;
   try {
-    analise = JSON.parse(response.choices[0].message.content);
+    let content = response.choices[0].message.content;
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    analise = JSON.parse(content);
   } catch {
     throw new Error('GPT retornou JSON inválido: ' + response.choices[0].message.content);
   }

@@ -5,6 +5,7 @@ dotenv.config();
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 oracledb.autoCommit = true;
+oracledb.fetchAsString = [oracledb.CLOB];
 
 let pool;
 
@@ -32,7 +33,15 @@ export async function query(sql, binds = [], opts = {}) {
   const conn = await getConnection();
   try {
     const result = await conn.execute(sql, binds, opts);
-    return result;
+    // Retorna apenas primitivos serializáveis — o objeto result completo do Oracle
+    // contém referências circulares (connection pool, cursor interno) que quebram
+    // JSON.stringify e a serialização do OpenAI SDK.
+    return {
+      rows:         result.rows         ?? [],
+      metaData:     result.metaData     ?? [],
+      rowsAffected: result.rowsAffected ?? 0,
+      outBinds:     result.outBinds     ?? {},
+    };
   } finally {
     await conn.close();
   }
